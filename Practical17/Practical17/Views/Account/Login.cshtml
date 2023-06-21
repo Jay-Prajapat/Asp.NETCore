@@ -1,0 +1,15 @@
+﻿@model Practical17.Models.LoginModel;
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Login</h1>
+<form asp-action="Login">
+    @Html.HiddenFor(x => x.ReturnUrl)
+
+    <input class="form-control" type="text" name="username" placeholder="Username" />
+    <input type="password" class="form-control" name="password" placeholder="Password" />
+    <br />
+    <button class=" btn btn-success">Sign in</button>
+</form>
