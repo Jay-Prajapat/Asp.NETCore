@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Practical_19.Interface;
+using Practical_19.Interfaces;
 using Practical_19.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Practical_19.Controllers
 {
+   
     public class AuthController : Controller
     {
-        string successMessage = "Registration completed successfully!!";
-        string errorMessage = "Something went wrong!!!";
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly IAuthentication authentication;
@@ -20,7 +20,7 @@ namespace Practical_19.Controllers
             this.signInManager = signInManager;
             this.authentication = authentication;
         }
-
+        
         [AllowAnonymous]
         public IActionResult Register()
         {
@@ -33,8 +33,8 @@ namespace Practical_19.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await authentication.RegisterUserAsync(model);
-
+                IdentityResult result = await authentication.RegisterAsync(model);
+                 
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Login");
@@ -56,32 +56,37 @@ namespace Practical_19.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string resultUrl = null)
         {
             if (ModelState.IsValid)
             {
-                var result = await authentication.LoginUserAsync(model);
+                var result = await authentication.LoginAsync(model);
                 if (result != null)
                 {
-
-                    var user = await userManager.FindByEmailAsync(model.Email);
-                    var roles = await userManager.GetRolesAsync(user);
-                    if (roles.Contains("Admin"))
+                    if (resultUrl == null || resultUrl == "/")
                     {
-                        return RedirectToAction("ListRoles", "Administration");
+                        var user = await userManager.FindByEmailAsync(model.Email);
+                        var roles = await userManager.GetRolesAsync(user);
+                        if (roles.Contains("Admin"))
+                        {
+                            return RedirectToAction("ListRoles", "Administration");
+                        }
+                        else if (roles.Contains("User"))
+                        {
+                            return RedirectToAction("Dashboard", "User");
+                        }
+                        else
+                        {
+                            return RedirectToPage(resultUrl);
+                        }
                     }
-                    else if (roles.Contains("User"))
+                    else
                     {
-                        return RedirectToAction("Dashboard", "User");
+                        return RedirectToPage("Index");
                     }
-
                 }
-                else
-                {
-                    return RedirectToPage("Index");
-                }
+                ModelState.AddModelError("", "Email or Password Incorrect");
             }
-            ModelState.AddModelError("", "Email or Password Incorrect");
             return View();
         }
         public async Task<IActionResult> Logout()
@@ -89,8 +94,5 @@ namespace Practical_19.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-
     }
-   
 }
-

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Practical_19.Interface;
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Practical_19.Interfaces;
 using Practical_19.Models;
 
 namespace Practical_19.Controllers.Api
@@ -24,10 +26,10 @@ namespace Practical_19.Controllers.Api
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             try
-            {   
+            {
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = await authentication.RegisterUserAsync(model);
+                    IdentityResult result = await authentication.RegisterAsync(model);
 
                     if (result.Succeeded)
                     {
@@ -37,11 +39,11 @@ namespace Practical_19.Controllers.Api
                     foreach (IdentityError error in result.Errors)
                     {
                         return BadRequest(error.Description);
-
+                        
                     }
                 }
                 return BadRequest(invalidDetails);
-
+               
             }
             catch (Exception ex)
             {
@@ -56,7 +58,7 @@ namespace Practical_19.Controllers.Api
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await authentication.LoginUserAsync(model);
+                    var result = await authentication.LoginAsync(model);
 
                     if (result != null)
                     {

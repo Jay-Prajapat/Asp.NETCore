@@ -9,11 +9,9 @@
 
 @if (Model.Any())
 {
-    
     <table class="table" id="userTable">
         <thead>
             <tr>
-
                 <th>
                     @Html.DisplayNameFor(model => model.Id)
                 </th>
@@ -28,7 +26,6 @@
             @foreach (var users in Model)
             {
                 <tr>
-
                     <td>
                         @Html.DisplayFor(modelItem => users.Id)
                     </td>
@@ -39,15 +36,11 @@
                     <td>
                         <a asp-action="EditUser" asp-controller="Administration"
                             asp-route-id="@users.Id" class="btn btn-warning">Edit</a>
-
-
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-
-   
 }
 else
 {

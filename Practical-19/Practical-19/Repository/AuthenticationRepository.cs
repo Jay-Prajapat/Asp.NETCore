@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Practical_19.Interface;
+using Microsoft.AspNetCore.Mvc;
+using Practical_19.Interfaces;
 using Practical_19.Models;
 
 namespace Practical_19.Repository
@@ -14,7 +15,20 @@ namespace Practical_19.Repository
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-        public async Task<SignInResult> LoginUserAsync(LoginViewModel model)
+        public async Task<IdentityResult> RegisterAsync(RegisterViewModel model)
+        {
+            var user = new IdentityUser
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
+
+            var result = await userManager.CreateAsync(user, model.Password);
+            return result;
+
+        }
+
+        public async Task<Microsoft.AspNetCore.Identity.SignInResult> LoginAsync(LoginViewModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
             if (user != null)
@@ -28,17 +42,6 @@ namespace Practical_19.Repository
             }
             return null;
         }
-
-        public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
-        {
-            var user = new IdentityUser
-            {
-                UserName = model.Email,
-                Email = model.Email
-            };
-
-            var result = await userManager.CreateAsync(user, model.Password);
-            return result;
-        }
+          
     }
 }

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Practical_19.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Practical_19.Models;
+using System.Data;
 
 namespace Practical_19.Controllers
 {
-  
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -194,5 +195,6 @@ namespace Practical_19.Controllers
         {
             return View();
         }
+
     }
 }
