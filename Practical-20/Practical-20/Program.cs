@@ -5,8 +5,7 @@ using Practical_20.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
-
-
+using Practical_20.GlobalExceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +46,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-
+app.UseMiddleware (typeof(ExceptionHandlingMiddleware));
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -17,7 +17,7 @@ namespace Practical_20.Controllers
         
         public async Task<IActionResult> GetAllStudents()
         {
-            //throw new Exception("Global Exception Testing");
+            throw new Exception("Global Exception Testing");
             IEnumerable<Student> students =  await _studentService.GetAll();
             return View(students);
         }
