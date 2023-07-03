@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Practical_20.Models.Student>
+
+@{
+    ViewData["Title"] = "Index";
+   
+}
+<h1>Student List</h1>
+<hr />
+<p>
+    <a asp-action="AddStudent" class="btn btn-primary">Add Student</a>
+</p>
+<div id="form-content">
+</div>
+
+<table class="table" id="studentTable">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.StudentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody id="student">
+    @foreach (var item in Model) {
+        <tr>
+             
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+          
+        </tr>
+    }
+    </tbody>
+</table>
+
+ 
